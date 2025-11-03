@@ -1,35 +1,67 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { useAuth } from './hooks/useAuth';
-import { AuthProvider } from './contexts/AuthContext';
+import { useContext } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, AuthContext } from './contexts/AuthContext';
+import { CartProvider } from './contexts/CartContext';
 import LoginPage from './pages/LoginPage';
 import ProductListPage from './pages/ProductListPage';
 import CartPage from './pages/CartPage';
 import OrderPage from './pages/OrderPage';
 import { Navbar } from './components';
-import { CartProvider } from './contexts/CartContext'
 import './i18n';
+import { Box, CircularProgress } from '@mui/material';
 
-const PrivateRoute = ({ children }) => {
-  const { user } = useAuth();
-  return user ? children : <Navigate to="/login" />;
+export const PrivateRoute = ({ children }) => {
+  const { user, loading } = useContext(AuthContext);
+
+  if (loading)
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh', // 置中整個頁面
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+
+  if (!user) return <Navigate to="/login" />;
+
+  return children;
 };
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
+    <BrowserRouter>
+      <AuthProvider>
         <CartProvider>
           <Navbar />
           <Routes>
             <Route path="/login" element={<LoginPage />} />
-             <Route path="/products" element={<ProductListPage />} /> 
-            <Route path="/cart" element={<PrivateRoute><CartPage /></PrivateRoute>} />
-            <Route path="/orders" element={<PrivateRoute><OrderPage /></PrivateRoute>} />
-            <Route path="*" element={<Navigate to="/products" />} />
+            <Route path="/products" element={<ProductListPage />} />
+            <Route
+              path="/cart"
+              element={
+                <PrivateRoute>
+                  <CartPage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/orders"
+              element={
+                <PrivateRoute>
+                  <OrderPage />
+                </PrivateRoute>
+              }
+            />
+            <Route path="*" element={<Navigate to="/products" replace />} />
           </Routes>
         </CartProvider>
-      </Router>
-    </AuthProvider>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 

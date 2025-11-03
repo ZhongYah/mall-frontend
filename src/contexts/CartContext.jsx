@@ -1,28 +1,43 @@
-import { createContext, useState, useEffect } from 'react';
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useState, useEffect, useContext } from 'react';
+import { AuthContext } from './AuthContext';
 
-// 建立 CartContext
-// eslint-disable-next-line react-refresh/only-export-components
 export const CartContext = createContext();
 
-// CartProvider 包裝組件
 export const CartProvider = ({ children }) => {
-  // 從 localStorage 初始化
+  const { user } = useContext(AuthContext);
+  const username = user?.username || null;
+  const isGuest = !username;
+
+  const storageKey = isGuest ? null : `cart_${username}`;
+
   const [cart, setCart] = useState(() => {
-    const saved = localStorage.getItem('cart');
+    if (isGuest) return [];
+    const saved = localStorage.getItem(storageKey);
     return saved ? JSON.parse(saved) : [];
   });
 
-  // 同步 cart 到 localStorage
+  // 使用者切換時自動載入對應購物車
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart));
-  }, [cart]);
+    if (!storageKey) {
+      setCart([]);
+      return;
+    }
 
-  // 新增商品到購物車
+    const saved = localStorage.getItem(storageKey);
+    setCart(saved ? JSON.parse(saved) : []);
+  }, [storageKey]);
+
+  // 安全儲存購物車到 localStorage
+  useEffect(() => {
+    if (!storageKey) return; // 訪客不存
+    localStorage.setItem(storageKey, JSON.stringify(cart));
+  }, [cart, storageKey]);
+
   const addToCart = (product) => {
     setCart((prev) => {
       const existing = prev.find((p) => p.id === product.id);
       if (existing) {
-        // 已存在就增加數量
         return prev.map((p) =>
           p.id === product.id ? { ...p, quantity: p.quantity + 1 } : p
         );
@@ -31,22 +46,16 @@ export const CartProvider = ({ children }) => {
     });
   };
 
-  // 更新商品數量
   const updateQuantity = (id, quantity) => {
-    setCart((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, quantity } : p))
-    );
+    setCart((prev) => prev.map((p) => (p.id === id ? { ...p, quantity } : p)));
   };
 
-  // 從購物車移除商品
   const removeFromCart = (id) => {
     setCart((prev) => prev.filter((p) => p.id !== id));
   };
 
-  // 清空購物車
   const clearCart = () => setCart([]);
 
-  // 計算總金額
   const totalAmount = cart.reduce((sum, p) => sum + p.price * p.quantity, 0);
 
   return (

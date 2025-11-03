@@ -65,15 +65,17 @@ export default function CartPage() {
     setSelectAll(false);
   };
 
-  // const handleConfirmDelete = () => {
-  //   clearCart();
-  //   setSelectAll(false);
-  //   setOpenDialog(false);
-  // };
-
-  // const handleCancelDelete = () => {
-  //   setOpenDialog(false);
-  // };
+  const getDisplayName = (name) => {
+    const lang = localStorage.getItem('i18nextLng')
+    if (lang === 'zh') {
+      const parts = name.split(' ');
+      return parts[0]; // 空格前
+    } else if (lang === 'en') {
+      const parts = name.split(' ');
+      return parts.slice(1).join(' '); // 空格後
+    }
+    return name; // fallback
+  };
 
   // 當組件 unmount 時清除成功訊息
   useEffect(() => {
@@ -125,7 +127,7 @@ export default function CartPage() {
               <TableBody>
                 {cart.map((item) => (
                   <TableRow key={item.id}>
-                    <TableCell>{item.name}</TableCell>
+                    <TableCell>{getDisplayName(item.name)}</TableCell>
                     <TableCell>${item.price}</TableCell>
                     <TableCell>
                       <TextField
@@ -160,17 +162,6 @@ export default function CartPage() {
           >
             {t('cartPage.checkout')}
           </Button>
-
-          {/* 清空購物車 Dialog */}
-          {/* <Dialog open={openDialog} onClose={handleCancelDelete}>
-            <DialogTitle>{t('cartPage.confirmDeleteTitle')}</DialogTitle>
-            <DialogActions>
-              <Button onClick={handleCancelDelete}>{t('cartPage.cancel')}</Button>
-              <Button onClick={handleConfirmDelete} color="error">
-                {t('cartPage.delete')}
-              </Button>
-            </DialogActions>
-          </Dialog> */}
 
           {/* 確認結帳 Dialog */}
           <Dialog open={openCheckoutDialog} onClose={() => setOpenCheckoutDialog(false)}>

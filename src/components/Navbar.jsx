@@ -39,7 +39,7 @@ export default function Navbar() {
           >
             <Box component="img" src={Logo} alt="Logo" sx={{ height: 40, mr: 1 }} />
             <Typography variant="h6" sx={{ mr: 2 }}>
-              {t('Stone Crab Shop')}
+              {t('stone_crab_shop')}
             </Typography>
           </Box>
 
