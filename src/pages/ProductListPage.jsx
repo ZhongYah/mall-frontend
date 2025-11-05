@@ -181,7 +181,7 @@ export default function ProductListPage() {
             count={totalPages}
             page={page}
             onChange={(e, value) => setPage(value)}
-            sx={{ mt: 3, display: 'flex', justifyContent: 'center' }}
+            sx={{ mt: 3, mr:10 ,display: 'flex', justifyContent: 'center' }}
           />
         )}
       </div>

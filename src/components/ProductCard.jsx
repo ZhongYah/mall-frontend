@@ -41,7 +41,7 @@ export default function ProductCard({ name, price, image, description, onAddToCa
     <Box sx={{ width: '100%' }}>
       {/* Card 可點擊整個顯示 description */}
       <Card
-        sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minWidth: 270, maxWidth: 300, minHeight: 460, maxHeight: 480, cursor: 'pointer' }}
+        sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minWidth: 250, maxWidth: 270, minHeight: 400, maxHeight: 420, cursor: 'pointer' }}
         onClick={() => setOpenDescDialog(true)}
       >
         {/* <CardMedia
