@@ -57,6 +57,34 @@ export default function Navbar() {
           >
             {t('products')}
           </Button>
+
+          {/* Home 按鈕 */}
+          <Button
+            color="inherit"
+            sx={{
+              textTransform: 'none',
+              ml: 6,
+              fontSize: 16,
+              background: 'linear-gradient(90deg, #ffffffff, #f9ffdbff, #ffffffff)',
+              fontFamily: '"Poppins", "Microsoft JhengHei", sans-serif',
+              backgroundSize: '200% auto',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              animation: 'shine 3s linear infinite, pulse 3s ease-in-out infinite',
+              '@keyframes shine': {
+                '0%': { backgroundPosition: '200% center' },
+                '100%': { backgroundPosition: '-200% center' },
+              },
+              '@keyframes pulse': {
+                '0%, 100%': { transform: 'scale(1)' },
+                '50%': { transform: 'scale(1.05)' },
+              },
+            }}
+            onClick={() => navigate('/home')}
+          >
+            {t('about')}
+          </Button>
+
         </Box>
 
         {/* 右側：語言切換 + 登入/登出 */}

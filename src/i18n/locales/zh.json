@@ -56,5 +56,6 @@
   "go_to_login": "前往登入",
   "login_error_400": "帳號或密碼錯誤",
   "login_error_500": "伺服器錯誤，請稍後再試",
-  "network_error": "網路錯誤，請檢查連線"
+  "network_error": "網路錯誤，請檢查連線",
+  "about": "關於我們"
 }
