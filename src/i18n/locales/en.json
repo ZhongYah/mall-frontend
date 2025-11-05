@@ -56,5 +56,6 @@
   "go_to_login": "Go to login",
   "login_error_400": "Incorrect account or password",
   "login_error_500": "Server error, please try later",
-  "network_error": "Network error, please check your connection"
+  "network_error": "Network error, please check your connection",
+  "about": "About Us"
 }

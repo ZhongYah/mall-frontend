@@ -9,6 +9,7 @@ import OrderPage from './pages/OrderPage';
 import { Navbar } from './components';
 import './i18n';
 import { Box, CircularProgress } from '@mui/material';
+import Home from './pages/Home';
 
 export const PrivateRoute = ({ children }) => {
   const { user, loading } = useContext(AuthContext);
@@ -41,6 +42,7 @@ function App() {
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/products" element={<ProductListPage />} />
+            <Route path="/home" element={<Home />} />
             <Route
               path="/cart"
               element={
