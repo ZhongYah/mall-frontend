@@ -23,64 +23,53 @@ import { Delete } from '@mui/icons-material';
 import { useCart } from '../hooks/useCart';
 import { useTranslation } from 'react-i18next';
 import { useState, useEffect } from 'react';
+import * as orderApi from '../api/order';
 
 export default function CartPage() {
   const { cart, updateQuantity, removeFromCart, totalAmount, clearCart } = useCart();
   const { t } = useTranslation();
   const [selectAll, setSelectAll] = useState(false);
-
-  // const [openDialog, setOpenDialog] = useState(false);
   const [openCheckoutDialog, setOpenCheckoutDialog] = useState(false);
-
-  // 新增成功訊息 state
   const [successMessage, setSuccessMessage] = useState('');
 
-  // 結帳流程
   const handleCheckoutClick = () => {
-    if (cart.length === 0) {
-      return;
+    if (!cart.length) return;
+    setOpenCheckoutDialog(true);
+  };
+
+  const handleConfirmCheckout = async () => {
+    console.log('結帳中，購物車內容:', cart);
+    if (!cart.length) return;
+
+    try {
+      // 呼叫後端建立訂單 API，將 localStorage cart 串過去
+      const res = await orderApi.placeOrderWithCart(cart);
+
+      setSuccessMessage(t('cartPage.checkoutSuccess', { total: res.data.total }));
+
+      // 清空購物車
+      clearCart();
+      setSelectAll(false);
+    } catch (err) {
+      console.error('結帳失敗:', err);
+    } finally {
+      setOpenCheckoutDialog(false);
     }
-    setOpenCheckoutDialog(true); // 開啟確認結帳 Dialog
   };
 
-  const handleConfirmCheckout = () => {
-    if (cart.length === 0) return;
-
-    const total = totalAmount;
-
-    // 顯示成功訊息
-    setSuccessMessage(t('cartPage.checkoutSuccess', { total }));
-
-    // 清空購物車
-    clearCart();
-    setSelectAll(false);
-
-    setOpenCheckoutDialog(false);
-  };
-
-  // 清空購物車 Dialog
   const handleDeleteAllClick = () => {
-    // setOpenDialog(true);
     clearCart();
     setSelectAll(false);
   };
 
   const getDisplayName = (name) => {
-    const lang = localStorage.getItem('i18nextLng')
-    if (lang === 'zh') {
-      const parts = name.split(' ');
-      return parts[0]; // 空格前
-    } else if (lang === 'en') {
-      const parts = name.split(' ');
-      return parts.slice(1).join(' '); // 空格後
-    }
-    return name; // fallback
+    const lang = localStorage.getItem('i18nextLng');
+    if (lang === 'zh') return name.split(' ')[0];
+    if (lang === 'en') return name.split(' ').slice(1).join(' ');
+    return name;
   };
 
-  // 當組件 unmount 時清除成功訊息
-  useEffect(() => {
-    return () => setSuccessMessage('');
-  }, []);
+  useEffect(() => () => setSuccessMessage(''), []);
 
   return (
     <Container sx={{ mt: 4 }}>
@@ -88,7 +77,6 @@ export default function CartPage() {
         {t('cartPage.title')}
       </Typography>
 
-      {/* 成功訊息 */}
       {successMessage && (
         <Typography color="success.main" sx={{ mb: 2 }}>
           {successMessage}
@@ -128,7 +116,7 @@ export default function CartPage() {
                 {cart.map((item) => (
                   <TableRow key={item.id}>
                     <TableCell>{getDisplayName(item.name)}</TableCell>
-                    <TableCell>${item.price}</TableCell>
+                    <TableCell>${item.price.toFixed(2)}</TableCell>
                     <TableCell>
                       <TextField
                         type="number"
@@ -138,7 +126,7 @@ export default function CartPage() {
                         sx={{ width: 60 }}
                       />
                     </TableCell>
-                    <TableCell>${item.price * item.quantity}</TableCell>
+                    <TableCell>${(item.price * item.quantity).toFixed(2)}</TableCell>
                     <TableCell>
                       <IconButton onClick={() => removeFromCart(item.id)}>
                         <Delete />
@@ -151,24 +139,23 @@ export default function CartPage() {
           </TableContainer>
 
           <Typography variant="h6" sx={{ mt: 2 }}>
-            {t('cartPage.total')}: ${totalAmount}
+            {t('cartPage.total')}: ${totalAmount.toFixed(2)}
           </Typography>
 
           <Button
             variant="contained"
             color="primary"
-            sx={{ mt: 2, backgroundColor: '#147e2fff', color: '#ffffffff' }}
+            sx={{ mt: 2, backgroundColor: '#147e2fff', color: '#fff' }}
             onClick={handleCheckoutClick}
           >
             {t('cartPage.checkout')}
           </Button>
 
-          {/* 確認結帳 Dialog */}
           <Dialog open={openCheckoutDialog} onClose={() => setOpenCheckoutDialog(false)}>
             <DialogTitle>{t('cartPage.checkoutTitle')}</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                {t('cartPage.checkoutConfirm', { total: totalAmount })}
+                {t('cartPage.checkoutConfirm', { total: totalAmount.toFixed(2) })}
               </DialogContentText>
             </DialogContent>
             <DialogActions>
