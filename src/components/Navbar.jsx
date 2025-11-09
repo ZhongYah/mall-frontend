@@ -1,15 +1,18 @@
-import { AppBar, Toolbar, Button, Typography, MenuItem, Select, Box } from '@mui/material';
+import { AppBar, Toolbar, Button, Typography, MenuItem, Select, Box, IconButton, Tooltip, Avatar } from '@mui/material';
 import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
 import Logo from '../assets/Logo.png';
 
+
 export default function Navbar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const [lang, setLang] = React.useState(i18n.language || 'zh');
+  const user1 = JSON.parse(localStorage.getItem('user'));
+  const username = user1?.username || 'Guest';
 
   const handleLanguageChange = (event) => {
     const newLang = event.target.value;
@@ -89,6 +92,27 @@ export default function Navbar() {
 
         {/* 右側：語言切換 + 登入/登出 */}
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
+
+          <Tooltip title={username}>
+            <IconButton
+              onClick={() => navigate('/userInfo')}
+              sx={{ ml: 2 }}
+              size="large"
+            >
+              <Avatar
+                sx={{
+                  bgcolor: '#1976d2',
+                  width: 36,
+                  height: 36,
+                  fontSize: 16,
+                  fontFamily: '"Poppins", "Microsoft JhengHei", sans-serif',
+                }}
+              >
+                {username.charAt(0).toUpperCase()}
+              </Avatar>
+            </IconButton>
+          </Tooltip>
+
           <Select
             value={lang}
             onChange={handleLanguageChange}

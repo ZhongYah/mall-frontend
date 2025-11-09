@@ -12,3 +12,6 @@ export const placeOrderWithCart = async (cartItems) => {
 export const getOrders = async () => {
   return axiosInstance().get('/api/orders');
 };
+
+const api = axiosInstance({ prefix: '/api/admin' });
+export const getAllOrders = () => api.get('/orders');

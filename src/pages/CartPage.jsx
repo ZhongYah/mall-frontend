@@ -17,7 +17,8 @@ import {
   DialogTitle,
   DialogContent,
   DialogContentText,
-  DialogActions
+  DialogActions,
+  CircularProgress
 } from '@mui/material';
 import { Delete } from '@mui/icons-material';
 import { useCart } from '../hooks/useCart';
@@ -25,12 +26,14 @@ import { useTranslation } from 'react-i18next';
 import { useState, useEffect } from 'react';
 import * as orderApi from '../api/order';
 
+
 export default function CartPage() {
   const { cart, updateQuantity, removeFromCart, totalAmount, clearCart } = useCart();
   const { t } = useTranslation();
   const [selectAll, setSelectAll] = useState(false);
   const [openCheckoutDialog, setOpenCheckoutDialog] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleCheckoutClick = () => {
     if (!cart.length) return;
@@ -38,9 +41,10 @@ export default function CartPage() {
   };
 
   const handleConfirmCheckout = async () => {
-    console.log('結帳中，購物車內容:', cart);
+    // console.log('結帳中，購物車內容:', cart);
     if (!cart.length) return;
 
+    setLoading(true);
     try {
       // 呼叫後端建立訂單 API，將 localStorage cart 串過去
       const res = await orderApi.placeOrderWithCart(cart);
@@ -159,9 +163,10 @@ export default function CartPage() {
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={() => setOpenCheckoutDialog(false)}>{t('cartPage.cancel')}</Button>
-              <Button onClick={handleConfirmCheckout} color="primary">
-                {t('cartPage.confirm')}
+              <Button onClick={() => setOpenCheckoutDialog(false)} disabled={loading} >{t('cartPage.cancel')}</Button>
+              <Button onClick={handleConfirmCheckout} color="primary" disabled={loading} >
+                {loading ? <CircularProgress size={24} color="inherit" /> : t('cartPage.confirm')}
+                {/* {t('cartPage.confirm')} */}
               </Button>
             </DialogActions>
           </Dialog>

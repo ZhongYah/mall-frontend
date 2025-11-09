@@ -10,6 +10,7 @@ import { Navbar } from './components';
 import './i18n';
 import { Box, CircularProgress } from '@mui/material';
 import Home from './pages/Home';
+import UserInfoPage from './pages/UserInfoPage';
 
 export const PrivateRoute = ({ children }) => {
   const { user, loading } = useContext(AuthContext);
@@ -58,6 +59,12 @@ function App() {
                   <OrderPage />
                 </PrivateRoute>
               }
+            />
+            <Route path="/userInfo" element={
+              <PrivateRoute>
+                <UserInfoPage />
+              </PrivateRoute>
+            }
             />
             <Route path="*" element={<Navigate to="/products" replace />} />
           </Routes>
