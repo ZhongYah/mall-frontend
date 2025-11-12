@@ -1,8 +1,10 @@
 import { Card, CardContent, Typography, Avatar, Box, Button } from '@mui/material';
 import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next'; // i18n
 
 export default function UserInfoPage() {
+  const { t } = useTranslation();
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -10,6 +12,11 @@ export default function UserInfoPage() {
     navigate('/login');
     return null;
   }
+
+  const roleLabel =
+    user.username === 'admin1'
+      ? t('system_admin')      // 系統管理員 / System Admin
+      : t('regular_user');     // 一般使用者 / Regular User
 
   return (
     <Box
@@ -34,14 +41,8 @@ export default function UserInfoPage() {
             {user.username}
           </Avatar>
 
-          {/* <Typography variant="h5" gutterBottom>
-            {user.username}
-          </Typography> */}
-          {/* <Typography variant="body1" color="text.secondary">
-            {user.email || '未設定 Email'}
-          </Typography> */}
           <Typography variant="body2" sx={{ mt: 1 }}>
-            角色：{user.username === 'admin1' ? '系統管理員' : '一般使用者'}
+            {t('role')}: {roleLabel}
           </Typography>
 
           <Box sx={{ mt: 3 }}>
@@ -52,7 +53,7 @@ export default function UserInfoPage() {
               onClick={() => navigate('/products')}
               sx={{ mb: 1 }}
             >
-              返回商品頁
+              {t('back_to_products')}
             </Button>
             <Button
               variant="outlined"
@@ -60,7 +61,7 @@ export default function UserInfoPage() {
               fullWidth
               onClick={logout}
             >
-              登出
+              {t('logout')}
             </Button>
           </Box>
         </CardContent>

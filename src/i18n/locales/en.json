@@ -4,7 +4,7 @@
     "tagline": "Find warmth and beauty in simple everyday things.",
     "description": "We believe that every object carries a story — from a hand-bound notebook to a wooden shelf. Here, you’ll discover small pieces that bring calm and inspiration to your daily life. Enjoy browsing, and take a moment to slow down."
   },
-   "orderPage": {
+  "orderPage": {
     "title": "Order History",
     "empty": "No orders yet",
     "orderId": "Order ID",
@@ -73,5 +73,12 @@
   "login_error_400": "Incorrect account or password",
   "login_error_500": "Server error, please try later",
   "network_error": "Network error, please check your connection",
-  "about": "About Us"
+  "about": "About Us",
+  "role": "Role",
+  "system_admin": "System Admin",
+  "regular_user": "Regular User",
+  "back_to_products": "Back to Products",
+  "login_expired_title": "Login Expired",
+  "login_expired_message": "Your session has expired. Please login again.",
+  "login_now": "Login Now"
 }

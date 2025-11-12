@@ -73,5 +73,12 @@
   "login_error_400": "帳號或密碼錯誤",
   "login_error_500": "伺服器錯誤，請稍後再試",
   "network_error": "網路錯誤，請檢查連線",
-  "about": "關於我們"
+  "about": "關於我們",
+  "role": "角色",
+  "system_admin": "系統管理員",
+  "regular_user": "一般使用者",
+  "back_to_products": "返回商品頁",
+  "login_expired_title": "登入已過期",
+  "login_expired_message": "您的登入已過期，請重新登入。",
+  "login_now": "立即重新登入"
 }

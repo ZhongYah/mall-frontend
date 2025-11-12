@@ -46,7 +46,7 @@ export default function CartPage() {
     setLoading(true);
     try {
       const res = await orderApi.placeOrderWithCart(
-        cart.map(item => ({
+        cart?.map(item => ({
           productId: item.id,
           quantity: item.quantity
         }))
@@ -119,7 +119,7 @@ export default function CartPage() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {cart.map((item) => (
+                {cart?.map((item) => (
                   <TableRow key={item.id}>
                     <TableCell>{getDisplayName(item.name)}</TableCell>
                     <TableCell>${item.price.toFixed(2)}</TableCell>
