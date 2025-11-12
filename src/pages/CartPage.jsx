@@ -41,17 +41,19 @@ export default function CartPage() {
   };
 
   const handleConfirmCheckout = async () => {
-    // console.log('結帳中，購物車內容:', cart);
     if (!cart.length) return;
 
     setLoading(true);
     try {
-      // 呼叫後端建立訂單 API，將 localStorage cart 串過去
-      const res = await orderApi.placeOrderWithCart(cart);
+      const res = await orderApi.placeOrderWithCart(
+        cart.map(item => ({
+          productId: item.id,
+          quantity: item.quantity
+        }))
+      );
 
       setSuccessMessage(t('cartPage.checkoutSuccess', { total: res.data.total }));
 
-      // 清空購物車
       clearCart();
       setSelectAll(false);
     } catch (err) {

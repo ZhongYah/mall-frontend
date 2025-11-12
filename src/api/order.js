@@ -1,17 +1,8 @@
 import axiosInstance from './axiosInstance';
 
-export const placeOrderWithCart = async (cartItems) => {
-  return axiosInstance().post('/api/orders/cart', 
-    cartItems.map(item => ({
-      productId: item.id,
-      quantity: item.quantity
-    }))
-  );
-};
+const api = axiosInstance({ prefix: '/api/orders' });
+export const placeOrderWithCart = (payload) => api.post('/cart', payload);
+export const getOrders = () => api.get('');
 
-export const getOrders = async () => {
-  return axiosInstance().get('/api/orders');
-};
-
-const api = axiosInstance({ prefix: '/api/admin' });
-export const getAllOrders = () => api.get('/orders');
+const adminApi = axiosInstance({ prefix: '/api/admin' });
+export const getAllOrders = () => adminApi.get('/orders');

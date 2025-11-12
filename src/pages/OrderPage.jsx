@@ -23,6 +23,13 @@ export default function OrderPage() {
   const user = JSON.parse(localStorage.getItem('user'));
   const username = user?.username;
 
+  const getDisplayName = (name) => {
+    const lang = localStorage.getItem('i18nextLng');
+    if (lang === 'zh') return name.split(' ')[0];
+    if (lang === 'en') return name.split(' ').slice(1).join(' ');
+    return name;
+  };
+
   useEffect(() => {
     (async () => {
       setLoading(true);
@@ -83,7 +90,7 @@ export default function OrderPage() {
                 <TableBody>
                   {order.items.map((item, index) => (
                     <TableRow key={index}>
-                      <TableCell>{item.productName}</TableCell>
+                      <TableCell>{getDisplayName(item.productName)}</TableCell>
                       <TableCell>{item.quantity}</TableCell>
                       <TableCell>${item.price}</TableCell>
                       <TableCell>${item.subtotal}</TableCell>

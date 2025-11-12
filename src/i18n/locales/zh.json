@@ -1,4 +1,20 @@
 {
+  "home": {
+    "title": "歡迎來到文青風小商店",
+    "tagline": "在日常的小物裡，尋找溫度與美感。",
+    "description": "我們相信每一件物品都有故事 —— 從一本手作筆記本，到一個木質書架。這裡收集了能讓日常變得柔軟的選物，希望你能在這裡，找到屬於自己的生活節奏與靈感。"
+  },
+  "orderPage": {
+    "title": "訂單紀錄",
+    "empty": "目前沒有任何訂單",
+    "orderId": "訂單編號",
+    "total": "總金額",
+    "username": "使用者",
+    "productName": "商品名稱",
+    "quantity": "數量",
+    "price": "單價",
+    "subtotal": "小計"
+  },
   "cartPage": {
     "title": "購物車",
     "empty": "購物車是空的",

@@ -1,4 +1,20 @@
 {
+  "home": {
+    "title": "Welcome to Wenqing Select Shop",
+    "tagline": "Find warmth and beauty in simple everyday things.",
+    "description": "We believe that every object carries a story — from a hand-bound notebook to a wooden shelf. Here, you’ll discover small pieces that bring calm and inspiration to your daily life. Enjoy browsing, and take a moment to slow down."
+  },
+   "orderPage": {
+    "title": "Order History",
+    "empty": "No orders yet",
+    "orderId": "Order ID",
+    "total": "Total",
+    "username": "User",
+    "productName": "Product Name",
+    "quantity": "Quantity",
+    "price": "Price",
+    "subtotal": "Subtotal"
+  },
   "cartPage": {
     "title": "Shopping Cart",
     "empty": "Your cart is empty",
